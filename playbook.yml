@@ -1,0 +1,8 @@
+---
+- hosts: all
+  roles:
+    - role: ansible-role-python-virtualenv-upstream
+      python_virtualenv_upstream_venv: /opt/test-venv
+      python_virtualenv_upstream_packages:
+        - omego
+        - scc

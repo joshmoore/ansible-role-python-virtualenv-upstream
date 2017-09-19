@@ -1,0 +1,41 @@
+---
+# tasks file for python-virtualenv-upstream
+
+- name: python virtualenv upstream | create setup directory
+  become: yes
+  file:
+    path: "{{ python_virtualenv_upstream_setup_dir }}"
+    recurse: yes
+    state: directory
+
+- name: python virtualenv upstream | download updated virtualenv
+  become: yes
+  get_url:
+    checksum: "sha1:{{ python_virtualenv_upstream_sha1 }}"
+    dest: "{{ python_virtualenv_upstream_setup_dir }}/virtualenv-{{ python_virtualenv_upstream_version }}.tar.gz"
+    url: "{{ python_virtualenv_upstream_url }}"
+
+- name: python virtualenv upstream | extract updated virtualenv
+  become: yes
+  unarchive:
+    creates: "{{ python_virtualenv_upstream_setup_dir }}/virtualenv-{{ python_virtualenv_upstream_version }}/virtualenv.py"
+    dest: "{{ python_virtualenv_upstream_setup_dir }}"
+    remote_src: True
+    src: "{{ python_virtualenv_upstream_setup_dir }}/virtualenv-{{ python_virtualenv_upstream_version }}.tar.gz"
+
+- name: python virtualenv upstream | create symlink
+  become: yes
+  file:
+    src: "{{ python_virtualenv_upstream_setup_dir }}/virtualenv-{{ python_virtualenv_upstream_version }}"
+    path: "{{ python_virtualenv_upstream_setup_dir }}/virtualenv"
+    force: yes
+    state: link
+
+- name: python virtualenv upstream | setup virtualenv
+  become: yes
+  pip:
+    name: "{{ python_virtualenv_upstream_packages }}"
+    state: present
+    virtualenv: "{{ python_virtualenv_upstream_venv }}"
+    virtualenv_command: "{{ python_virtualenv_upstream_setup_dir }}/virtualenv/virtualenv.py"
+  when: "python_virtualenv_upstream_venv | length > 0"
