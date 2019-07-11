@@ -1,6 +1,9 @@
 Python Virtualenv Upstream
 ==========================
 
+[![Build Status](https://travis-ci.org/ome/ansible-role-python-virtualenv-upstream.svg)](https://travis-ci.org/ome/ansible-role-python-virtualenv-upstream)
+[![Ansible Role](https://img.shields.io/ansible/role/42000.svg)](https://galaxy.ansible.com/ome/python_virtualenv_upstream/)
+
 Create a Python virtualenv using the upstream package.
 
 This can be used when the distribution python-virtualenv package is too old.
@@ -22,7 +25,7 @@ Example Playbook
 
     - hosts: all
       roles:
-        - role: openmicroscopy.python-virtualenv-upstream
+        - role: ome.python_virtualenv_upstream
           python_virtualenv_upstream_venv: /opt/test-venv
           python_virtualenv_upstream_packages:
             - omego
